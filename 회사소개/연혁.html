@@ -1,0 +1,594 @@
+<!-- ========================================
+   라이트썬 연혁 페이지 - 아임웹 코드 위젯용 통합 코드 (v2)
+   클래스명 충돌 방지를 위해 ls- 접두사 사용
+======================================== -->
+
+<style>
+    /* 연혁 전체 컨테이너 */
+    .ls-history {
+        width: 100% !important;
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+        padding: 80px 10px !important;
+        position: relative !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* 연혁 내용 영역 */
+    .ls-history-area {
+        position: relative !important;
+        width: 100% !important;
+    }
+    
+    /* 중앙 프로그래스바 가이드 라인 (배경 - 회색) */
+    .ls-line-guide {
+        position: absolute !important;
+        left: calc(50% - 2px) !important;
+        top: 0 !important;
+        width: 4px !important;
+        height: 100% !important;
+        background: #e0e0e0 !important;
+        /* z-index 없음 - stacking context 생성 방지 */
+    }
+
+    /* 프로그래스바 (채워지는 부분 - 주황색) */
+    .ls-progress {
+        position: absolute !important;
+        width: 100% !important;
+        height: 20px;  /* 초기값: 화살표가 첫 번째 점을 덮도록 (JS에서 제어) */
+        top: 0 !important;
+        left: 0 !important;
+        background: #f3350a !important;
+        overflow: visible !important;
+        z-index: 5 !important;
+    }
+
+    /* 화살표 인디케이터 */
+    .ls-progress::after {
+        content: '' !important;
+        position: absolute !important;
+        bottom: -25px !important;
+        left: calc(50% - 25px) !important;
+        width: 50px !important;
+        height: 50px !important;
+        background: url('https://cdn.imweb.me/thumbnail/20260127/85be10fda5086.png') no-repeat center !important;
+        background-size: contain !important;
+        z-index: 100 !important;
+        transition: opacity 0.3s ease !important;
+    }
+    
+    /* 화살표가 끝에 도달하면 숨김 */
+    .ls-progress.ls-finished::after {
+        opacity: 0 !important;
+    }
+    
+    /* 각 연혁 아이템 (flex 레이아웃) */
+    .ls-flex-history {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: flex-start !important;
+        position: relative !important;
+        margin-bottom: 60px !important;
+        min-height: 120px !important;
+    }
+    
+    .ls-flex-history:last-child {
+        margin-bottom: 0 !important;
+    }
+    
+    /* 왼쪽 영역 */
+    .ls-flex-history .ls-left {
+        flex: 1 !important;
+        text-align: right !important;
+        padding-right: 60px !important;
+        max-width: 60% !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* 오른쪽 영역 */
+    .ls-flex-history .ls-right {
+        flex: 1 !important;
+        text-align: left !important;
+        padding-left: 60px !important;
+        max-width: 60% !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* 연도 (h3) 기본 스타일 */
+    .ls-flex-history h3 {
+        font-size: 28px !important;
+        font-weight: 400 !important;
+        color: #999 !important;
+        margin-bottom: 15px !important;
+        transition: all 0.4s ease !important;
+        display: inline-block !important;
+    }
+    
+    /* 연도 이미지 사용 시 */
+    .ls-flex-history h3 img {
+        height: 40px !important;
+        opacity: 0.5 !important;
+        transition: all 0.4s ease !important;
+    }
+    
+    /* 연도가 활성화될 때 (화면에 들어올 때) */
+    .ls-flex-history h3.ls-active {
+        margin-top: 30px !important;
+        font-size: 42px !important;
+        font-weight: 700 !important;
+        color: #fe5200 !important;
+    }
+    
+    .ls-flex-history h3.ls-active img {
+        height: 55px !important;
+        opacity: 1 !important;
+    }
+    
+    /* 내용 텍스트 기본 (숨김) */
+    .ls-history-txt {
+        opacity: 0 !important;
+        transform: translateY(20px) !important;
+        transition: all 0.5s ease !important;
+    }
+    
+    /* 내용 텍스트 활성화 */
+    .ls-history-txt.ls-show {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+    
+    .ls-history-txt p {
+        font-size: 22px !important;
+        line-height: 1.5 !important;
+        color: #555 !important;
+        margin-bottom: 8px !important;
+    }
+    
+    /* 중앙 점 마커 */
+    .ls-flex-history::before {
+        content: '' !important;
+        position: absolute !important;
+        left: calc(50% - 6px) !important;
+        top: 50px !important;
+        width: 12px !important;
+        height: 12px !important;
+        background: #e0e0e0 !important;
+        border-radius: 50% !important;
+        z-index: 3 !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    /* 지나간 아이템의 점 마커 */
+    .ls-flex-history.ls-passed::before {
+        background: #f3350a !important;
+        box-shadow: 0 0 0 4px rgba(243, 53, 10, 0.2) !important;
+    }
+    
+    /* ========================================
+       반응형 (모바일 768px 이하)
+    ======================================== */
+    @media (max-width: 768px) {
+        .ls-history {
+            padding: 40px 15px !important;
+        }
+    
+        .ls-flex-history {
+            flex-direction: column !important;
+            margin-bottom: 40px !important;
+        }
+    
+        .ls-flex-history .ls-left,
+        .ls-flex-history .ls-right {
+            max-width: 100% !important;
+            text-align: left !important;
+            padding: 0 0 0 50px !important;
+        }
+    
+        .ls-line-guide {
+            left: 20px !important;
+        }
+
+        .ls-flex-history::before {
+            left: 14px !important;
+        }
+
+        .ls-progress::after {
+            width: 40px !important;
+            height: 40px !important;
+            bottom: -20px !important;
+            left: -18px !important;
+        }
+    
+        .ls-flex-history h3 {
+            font-size: 24px !important;
+        }
+    
+        .ls-flex-history h3.ls-active {
+            font-size: 32px !important;
+        }
+    
+        .ls-flex-history h3 img {
+            height: 30px !important;
+        }
+    
+        .ls-flex-history h3.ls-active img {
+            height: 42px !important;
+        }
+    
+        .ls-history-txt p {
+            font-size: 14px !important;
+        }
+    }
+    </style>
+    
+    <!-- HTML 구조 -->
+    <div class="ls-history">
+        <div class="ls-history-area">
+            <!-- 프로그래스바 -->
+            <div class="ls-line-guide">
+                <div class="ls-progress"></div>
+            </div>
+    
+            <!-- 2026 (왼쪽) -->
+            <div class="ls-flex-history" data-year="2026">
+                <div class="ls-left">
+                    <h3>2026</h3>
+                    <div class="ls-history-txt">
+                        <p>주식회사 라이트썬으로 사명 변경</p>
+                        <p>영농형, 주차장 태양광 사업 확장</p>
+                        <p>제23회 대구 국제그린에너지엑스포 참가(Bronze 스폰서)</p>
+                        <p>2026 중국 SNEC PV Power Expo 참관</p>
+                        <p>2026 일본 도쿄 에너지위크 참관</p>
+                        <p>중국 JMSolar社 업무협약</p>
+                        <p>한국건설기술연구원(KICT) 패밀리기업지정</p>
+                        <p>전남테크노파크-정부출연 패밀리기업지정</p>
+                    </div>
+                </div>
+                <div class="ls-right"></div>
+            </div>
+    
+            <!-- 2025 (오른쪽) -->
+            <div class="ls-flex-history" data-year="2025">
+                <div class="ls-left"></div>
+                <div class="ls-right">
+                    <h3>2025</h3>
+                    <div class="ls-history-txt">
+                        <p>에스엠전력에너지 경기지사 설립</p>
+                        <p>고정형 태양광발전장치 특허</p>
+                        <p>제22회 국제그린에너지엑스포 참가</p>
+                        <p>태양광 유지보수(O&M)부서 재편성</p>
+                        <p>(드론, 열화상 및 내시경 카메라 등 계측장비 도입)</p>
+                        <p>직접생산증명서(태양광 발전장치) 재획득</p>
+                        <p>2025 중앙아시아 에너지위크 참여(키르키스스탄, 우즈베키스탄)</p>
+                        <p>→ 1,000백만$ 수출관련 MOU 체결</p>
+                        <p>전남지역혁신클러스터 에너지신산업 OpenLap 회원사 입회</p>
+                        <p>무안군, 2025년 군정발전 유공자 표창</p>
+                        <p>통합 에너지 관리 솔루션 플랫폼 개발</p>
+                        <p>태양광 EPC·RPS 30MW 시공</p>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- 2024 (왼쪽) -->
+            <div class="ls-flex-history" data-year="2024">
+                <div class="ls-left">
+                    <h3>2024</h3>
+                    <div class="ls-history-txt">
+                        <p>제21회 국제그린에너지엑스포 참가</p>
+                        <p>Main-Biz 확인</p>
+                        <p>에스엠전력에너지 부산지사 설립</p>
+                        <p>AI기반 발전량 예측 시스템 도입 및</p>
+                        <p>전력 중개사업 VPP 준비 단계 착수</p>
+                        <p>태양광 EPC·RPS 23MW 시공</p>
+                    </div>
+                </div>
+                <div class="ls-right"></div>
+            </div>
+    
+            <!-- 2023 (오른쪽) -->
+            <div class="ls-flex-history" data-year="2023">
+                <div class="ls-left"></div>
+                <div class="ls-right">
+                    <h3>2023</h3>
+                    <div class="ls-history-txt">
+                        <p>제20회 국제그린에너지엑스포 참가</p>
+                        <p>기업형 RE100 컨설팅 및 자가소비형 태양광 모델 확산</p>
+                        <p>누적 관리 O&M 개소 200개 달성</p>
+                        <p>태양광 EPC·RPS 21MW 시공</p>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- 2022 (왼쪽) -->
+            <div class="ls-flex-history" data-year="2022">
+                <div class="ls-left">
+                    <h3>2022</h3>
+                    <div class="ls-history-txt">
+                        <p>한국에너지공단 참여기업 선정</p>
+                        <p>중소벤처기업부 성과 공유 기업 지정</p>
+                        <p>주택지원사업·건물지원사업 70개소 보급</p>
+                        <p>알파에너웍스 BIPV MOU 체결</p>
+                        <P>산단 지붕 태양광 전문 공법(무타공 등) 도입</P>
+                        <p>및 대형 프로젝트 수주</P>
+                        <p>태양광 EPC·RPS 18MW 시공</p>
+                    </div>
+                </div>
+                <div class="ls-right"></div>
+            </div>
+    
+            <!-- 2021 (오른쪽) -->
+            <div class="ls-flex-history" data-year="2021">
+                <div class="ls-left"></div>
+                <div class="ls-right">
+                    <h3>2021</h3>
+                    <div class="ls-history-txt">
+                        <p>태양광 발전장치, 배전반 직접 생산 등록</p>
+                        <p>벤처기업 확인 완료</p>
+                        <p>에너지저장시스템, 기울기 가변형 태양광 발전장치 특허</p>
+                        <p>접속함 KS 인증 완료</p>
+                        <p>노후 발전소 성능 개선(리파워링) 및 수익 최적화 솔루션 런칭</p>
+                        <p>태양광 EPC·RPS 13MW 시공</p>
+                        <p>태양광 구조물 제작·납품 7.7.MW 완료</p>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- 2020 (왼쪽) -->
+            <div class="ls-flex-history" data-year="2020">
+                <div class="ls-left">
+                    <h3>2020</h3>
+                    <div class="ls-history-txt">
+                        <p>연구개발 전담부서 설립</p>
+                        <p>Inno-Biz 확인</p>
+                        <p>본사 및 공장 신설 이전</p>
+                        <p>에스엠이엔지 구조물 제작 법인회사 설립</p>
+                        <p>영업기술부 강화(사업타당성 분석 및</p>
+                        <p>금융 조달 자문 서비스 고도화)</p>
+                        <p>태양광 EPC·RPS 13MW 시공</p>
+                    </div>
+                </div>
+                <div class="ls-right"></div>
+            </div>
+    
+            <!-- 2019 (오른쪽) -->
+            <div class="ls-flex-history" data-year="2019">
+                <div class="ls-left"></div>
+                <div class="ls-right">
+                    <h3>2019</h3>
+                    <div class="ls-history-txt">
+                        <p>ISO 9001(품질), 14001(환경) 인증 획득으로 시공 품질 표준화</p>
+                        <p>누적 시공 용량 100MW 돌파</p>
+                        <p>태양광 EPC·RPS 10MW 시공</p>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- 2018 (왼쪽) -->
+            <div class="ls-flex-history" data-year="2018">
+                <div class="ls-left">
+                    <h3>2018</h3>
+                    <div class="ls-history-txt">
+                        <p>전기공사협회 회원 등록</p>
+                        <p>태양광발전소 분양사업 시작</p>
+                        <p>ISO 품질·안전보건경영시스템 인증</p>
+                        <P>태양광 발전소 유지관리 조직 신설</P>
+                        <p>실시간 관제 시스템 운용 개시</p>
+                        <p>태양광 EPC·RPS 5MW 시공</p>
+                    </div>
+                </div>
+                <div class="ls-right"></div>
+            </div>
+    
+            <!-- 2017 (오른쪽) -->
+            <div class="ls-flex-history" data-year="2017">
+                <div class="ls-left"></div>
+                <div class="ls-right">
+                    <h3>2017</h3>
+                    <div class="ls-history-txt">
+                        <p>(주)에스엠전력에너지 법인회사로 전환</p>
+                        <p>고효율 모듈 및 인버터 매칭 시스템 표준화</p>
+                        <p>건축물 활용 태양광발전소 BIPV 시공실적 확보</p>
+                        <p>전기공사업·제조업·건설업 등록</p>
+                        <p>태양광 EPC·RPS 2.8MW 시공</p>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- 2016 (왼쪽) -->
+            <div class="ls-flex-history" data-year="2016">
+                <div class="ls-left">
+                    <h3>2016</h3>
+                    <div class="ls-history-txt">
+                        <p>태양광 발전 시스템 설계 최적화 프로세스 도입</p>
+                        <p>중소규모 발전소 50개소 시공 달성</p>
+                        <p>주택용·일반용·발전용 태양광 2.2MW 시공</p>
+                    </div>
+                </div>
+                <div class="ls-right"></div>
+            </div>
+    
+            <!-- 2015 (오른쪽) -->
+            <div class="ls-flex-history" data-year="2015">
+                <div class="ls-left"></div>
+                <div class="ls-right">
+                    <h3>2015</h3>
+                    <div class="ls-history-txt">
+                        <p>관급/민간 태양광 EPC 사업 본격화</p>
+                        <p>주택용·일반용·발전용 태양광 1.6MW 시공</p>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- 2014 (왼쪽) -->
+            <div class="ls-flex-history" data-year="2014">
+                <div class="ls-left">
+                    <h3>2014</h3>
+                    <div class="ls-history-txt">
+                        <p>에스태양광솔루션 회사 설립</p>
+                        <p>전기공사업 면허 취득</p>
+                        <p>주택용·일반용 태양광 800kW 시공</p>
+                    </div>
+                </div>
+                <div class="ls-right"></div>
+            </div>
+    
+        </div>
+    </div>
+    
+    <script>
+    (function() {
+        // 라이트썬 연혁 스크롤 애니메이션
+        var lsHistoryArea = null;
+        var lsProgress = null;
+        var lsFlexHistories = null;
+        var lsLastItem = null;
+        var lsInitialized = false;
+    
+        function lsInitHistory() {
+            // 요소 선택
+            lsHistoryArea = document.querySelector('.ls-history-area');
+            lsProgress = document.querySelector('.ls-progress');
+            lsFlexHistories = document.querySelectorAll('.ls-flex-history');
+    
+            if (!lsHistoryArea || !lsProgress || lsFlexHistories.length === 0) {
+                console.log('[라이트썬 연혁] 요소를 찾을 수 없습니다. 재시도...');
+                return false;
+            }
+    
+            lsLastItem = lsFlexHistories[lsFlexHistories.length - 1];
+            lsInitialized = true;
+    
+            // 첫 번째 아이템은 처음부터 활성화 (이미 지나간 상태로 시작)
+            var firstItem = lsFlexHistories[0];
+            firstItem.classList.add('ls-passed');
+            var firstH3 = firstItem.querySelector('h3');
+            if (firstH3) firstH3.classList.add('ls-active');
+            var firstTxt = firstItem.querySelector('.ls-history-txt');
+            if (firstTxt) firstTxt.classList.add('ls-show');
+    
+            console.log('[라이트썬 연혁] 초기화 완료');
+            return true;
+        }
+    
+        function lsUpdateProgress() {
+            if (!lsInitialized) return;
+    
+            // 연혁 영역의 위치 정보
+            var areRect = lsHistoryArea.getBoundingClientRect();
+            var windowHeight = window.innerHeight;
+    
+            // 첫 번째 아이템과 마지막 아이템 위치
+            var firstItem = lsFlexHistories[0];
+            var firstItemRect = firstItem.getBoundingClientRect();
+            var lastItemRect = lsLastItem.getBoundingClientRect();
+    
+            // 시작점: 첫 번째 아이템의 상단 (history_area 기준 상대 위치)
+            var startOffset = firstItemRect.top - areRect.top;
+    
+            // 끝점: 마지막 아이템의 하단 (history_area 기준 상대 위치)
+            var endOffset = lastItemRect.bottom - areRect.top;
+    
+            // 전체 거리
+            var totalDistance = endOffset - startOffset;
+    
+            // 현재 스크롤 위치 (화면 중앙 기준, history_area 상대 위치)
+            var scrollCenter = windowHeight / 2;
+            var currentPosition = scrollCenter - areRect.top;
+    
+            // 프로그래스 계산
+            // 최소값: 화살표 중앙이 첫 번째 점(top:20px)을 덮도록
+            var minHeight = 20;
+            var progressHeight = currentPosition - startOffset + 30;
+            if (progressHeight < minHeight) progressHeight = minHeight;
+            if (progressHeight > totalDistance) progressHeight = totalDistance;
+    
+            // 프로그래스바 높이 적용 (px 단위, !important로 강제 적용)
+            lsProgress.style.setProperty('height', progressHeight + 'px', 'important');
+    
+            // 마지막 아이템 중앙이 화면 중앙에 도달하면 화살표 숨김
+            var lastItemCenter = lastItemRect.top + lastItemRect.height / 2;
+            if (lastItemCenter < windowHeight / 2 + 50) {
+                lsProgress.classList.add('ls-finished');
+            } else {
+                lsProgress.classList.remove('ls-finished');
+            }
+    
+            // 각 연혁 아이템 체크
+            for (var i = 0; i < lsFlexHistories.length; i++) {
+                var item = lsFlexHistories[i];
+                var rect = item.getBoundingClientRect();
+                var triggerPoint = windowHeight * 0.65;
+    
+                if (rect.top < triggerPoint) {
+                    item.classList.add('ls-passed');
+    
+                    var h3 = item.querySelector('h3');
+                    if (h3) {
+                        h3.classList.add('ls-active');
+                    }
+    
+                    var txt = item.querySelector('.ls-history-txt');
+                    if (txt) {
+                        txt.classList.add('ls-show');
+                    }
+                }
+            }
+        }
+    
+        // 스크롤 이벤트 핸들러
+        var lsTicking = false;
+        function lsOnScroll() {
+            if (!lsTicking) {
+                window.requestAnimationFrame(function() {
+                    lsUpdateProgress();
+                    lsTicking = false;
+                });
+                lsTicking = true;
+            }
+        }
+    
+        // 초기화 및 이벤트 바인딩
+        function lsStart() {
+            // 요소 찾기 시도 (최대 10회)
+            var attempts = 0;
+            var maxAttempts = 10;
+    
+            function tryInit() {
+                attempts++;
+                if (lsInitHistory()) {
+                    // 성공 - 이벤트 바인딩
+                    window.addEventListener('scroll', lsOnScroll, { passive: true });
+                    window.addEventListener('resize', lsUpdateProgress);
+    
+                    // 초기 실행
+                    lsUpdateProgress();
+    
+                    // 추가: 100ms 간격으로 업데이트 (아임웹 동적 로딩 대응)
+                    setInterval(lsUpdateProgress, 100);
+                } else if (attempts < maxAttempts) {
+                    // 실패 - 재시도
+                    setTimeout(tryInit, 300);
+                } else {
+                    console.log('[라이트썬 연혁] 초기화 실패');
+                }
+            }
+    
+            tryInit();
+        }
+    
+        // DOM 로드 완료 후 실행
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(lsStart, 500);
+            });
+        } else {
+            setTimeout(lsStart, 500);
+        }
+    
+        // 추가: window load 이벤트에서도 실행
+        window.addEventListener('load', function() {
+            setTimeout(lsStart, 500);
+        });
+    })();
+    </script>
+    
