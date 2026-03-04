@@ -1,0 +1,124 @@
+<style>
+    /* 태양광 갤러리 기본 CSS */
+    #w20260102ca4abd56e2003 .img_wrap._img_wrap {
+        position: relative !important;
+        overflow: hidden !important;
+    }
+
+    /* 주황색 오버레이 - CSS ::after 방식 (JS 불필요, cloned 슬라이드도 자동 적용) */
+    #w20260102ca4abd56e2003 .img_wrap._img_wrap::after {
+        content: '' !important;
+        position: absolute !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 0% !important;
+        background: rgba(254, 82, 0, 0.5) !important;
+        transition: height 0.4s ease !important;
+        z-index: 5 !important;
+        pointer-events: none !important;
+    }
+
+    #w20260102ca4abd56e2003 .item_container._item_container:hover .img_wrap._img_wrap::after {
+        height: 100% !important;
+    }
+
+    /* 텍스트 영역 */
+    #w20260102ca4abd56e2003 .text_wrap._text_wrap {
+        position: absolute !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 60px !important;
+        background: rgba(0,0,0,0.3) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-end !important;
+        align-items: flex-start !important;
+        padding: 15px 20px !important;
+        box-sizing: border-box !important;
+        transition: background 0.4s ease !important;
+        z-index: 10 !important;
+    }
+
+    /* Hover 시 텍스트 배경 투명하게 */
+    #w20260102ca4abd56e2003 .item_container._item_container:hover .text_wrap._text_wrap {
+        background: rgba(0,0,0,0) !important;
+    }
+
+    /* 텍스트 기본 스타일 */
+    #w20260102ca4abd56e2003 .text_wrap._text_wrap p {
+        color: #fff !important;
+        font-size: 18px !important;
+        font-weight: bold !important;
+        margin: 0 !important;
+        padding-left: 10px !important;
+        padding-bottom: 35px !important;
+        text-align: left !important;
+        transition: transform 0.4s ease !important;
+        background: transparent !important;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.5) !important;
+    }
+
+    #w20260102ca4abd56e2003 .text_wrap._text_wrap span {
+        color: #fff !important;
+        font-size: 14px !important;
+        margin-top: 5px !important;
+        text-align: left !important;
+        transition: transform 0.4s ease !important;
+        background: transparent !important;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.5) !important;
+    }
+
+    /* Hover 시 텍스트 이동 */
+    #w20260102ca4abd56e2003 .item_container._item_container:hover .text_wrap._text_wrap p {
+        //transform: translateY(-70px) !important;
+    }
+
+    #w20260102ca4abd56e2003 .item_container._item_container:hover .text_wrap._text_wrap span {
+        transform: translateY(5px) !important;
+    }
+</style>
+
+<script>
+// text_wrap을 img_wrap 안으로 이동 (absolute 포지셔닝 적용을 위해)
+(function() {
+    function moveTextWrap() {
+        const widget = document.getElementById('w20260102ca4abd56e2003');
+        if (!widget) return;
+
+        widget.querySelectorAll('.item_container._item_container').forEach(function(container) {
+            if (container.dataset.textMoved) return;
+            const imgWrap = container.querySelector('.img_wrap._img_wrap');
+            const textWrap = container.querySelector('.text_wrap._text_wrap');
+            if (imgWrap && textWrap && textWrap.parentElement !== imgWrap) {
+                imgWrap.appendChild(textWrap);
+                container.dataset.textMoved = 'true';
+            }
+        });
+    }
+
+    function init() {
+        moveTextWrap();
+        setTimeout(moveTextWrap, 500);
+        setTimeout(moveTextWrap, 1000);
+        setTimeout(moveTextWrap, 2000);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+    window.addEventListener('load', function() {
+        moveTextWrap();
+        const widget = document.getElementById('w20260102ca4abd56e2003');
+        if (widget) {
+            const observer = new MutationObserver(moveTextWrap);
+            observer.observe(widget, { childList: true, subtree: true });
+        }
+    });
+})();
+</script>
