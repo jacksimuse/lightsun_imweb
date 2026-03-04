@@ -1,0 +1,36 @@
+<style>                                                                                                  /* SNS 버튼 간격 좁히기 - 섹션 ID 사용 */
+  #s20260127d3dcc9a680a82 .col-dz.col-dz-1 {                                                             
+    width: auto !important;
+    flex: 0 0 auto !important;
+    padding: 0px !important;
+  }
+
+  #s20260127d3dcc9a680a82 .doz_row {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 20px !important;
+     font: 14px !important;
+      color : #fff !important;
+  }
+
+  #w20260222d36860c47adb7 .txt._txt_wrap,
+  #w20260222d36860c47adb7 .hover_txt._hover_txt_wrap {
+      font-size: 14px !important;
+      color: #ffffff !important;
+  }
+
+   #w20260222ab3cf65fb324d .txt._txt_wrap,
+  #w20260222ab3cf65fb324d .hover_txt._hover_txt_wrap {
+      font-size: 14px !important;
+      color: #ffffff !important;
+  }
+
+   #w202602209cdd7b5837dfb .txt._txt_wrap,
+  #w202602209cdd7b5837dfb .hover_txt._hover_txt_wrap {
+      font-size: 14px !important;
+      color: #ffffff !important;
+  }
+  
+  </style>
+
+  
