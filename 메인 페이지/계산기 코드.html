@@ -1,0 +1,338 @@
+<style>
+    /* 계산기 컨테이너 */
+    .calculator-dropdown {
+        display: block;
+        width: 100%;
+        background: #FFF8F3;
+       // box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        padding: 10px 0;
+        margin-left : 30px !important;
+        box-sizing: border-box;
+    }
+
+    /* 제목 */
+    .calc-title {
+        text-align: center;
+        font-size: 28px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+    }
+    .calc-subtitle {
+        text-align: center;
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+    /* 공통 행/셀 스타일 (입력 영역 + 결과 영역 통일) */
+    .calc-table {
+        display: grid;
+        grid-template-columns: 1fr 1fr 100px;
+        grid-template-rows: 1fr 1fr;
+        gap: 15px 15px;
+        width: 100%;
+        align-items: center;
+    }
+    .calc-result-section .calc-rows {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: calc(100% - 120px);
+        gap: 15px 20px;
+    }
+    .calc-row {
+        display: contents;
+    }
+    .calc-cell {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex: 1;
+        min-width: 0;
+    }
+    .calc-table > .calc-cell {
+        flex: none;
+    }
+    .calc-label {
+        font-size: 16px;
+        font-weight: bold;
+        color: #000;
+        width: 70px;
+        flex-shrink: 0;
+    }
+    .calc-input,
+    .calc-select,
+    .calc-result-value {
+        flex: 1;
+        height: 45px;
+        padding: 0 3px;
+        border: 1px solid #ccc;
+        font-size: 15px;
+        box-sizing: border-box;
+        min-width: 0;
+    }
+    .calc-input,
+    .calc-select {
+        background: #f9f9f9;
+    }
+    .calc-result-value {
+        background: #fff;
+        line-height: 45px;
+        text-align: right;
+    }
+    .calc-input:focus, .calc-select:focus {
+        outline: none;
+        border-color: #fe5200;
+    }
+    .calc-unit {
+        font-size: 15px;
+        color: #000;
+        width: 30px;
+        flex-shrink: 0;
+        text-align: left;
+    }
+    .calc-input.readonly {
+        background: #f0f0f0;
+        color: #666;
+    }
+
+    /* 계산하기 버튼 영역 */
+    .calc-btn-wrapper {
+        grid-column: 3;
+        grid-row: 1 / 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 120px;
+    }
+    .calc-btn {
+        height: 45px;
+        padding: 0 30px;
+        background: #fff;
+        border: 1px solid #333;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        white-space: nowrap;
+    }
+    .calc-btn:hover {
+        background: #333;
+        color: #fff;
+    }
+
+    /* 구분선 */
+    .calc-divider {
+        border: none;
+        border-top: 1px dashed #ccc;
+        margin: 30px 0;
+    }
+
+    /* 구분선 및 결과 영역 (드롭다운) */
+    .calc-result-wrapper {
+        display: none;
+    }
+    .calc-result-wrapper.show {
+        display: block;
+    }
+
+    /* 결과 영역 */
+    .calc-result-section {
+        display: block;
+    }
+    .calc-result-title {
+        font-size: 22px;
+        font-weight: bold;
+        color: #000;
+        margin-bottom: 20px;
+    }
+    .calc-notice {
+        font-size: 13px;
+        color: #999;
+        margin-top: 20px;
+    }
+    </style>
+    
+    <!-- 수익계산기 -->
+    <div class="calculator-dropdown" id="calculatorDropdown">
+    
+        <!-- 입력 영역 - 3열 레이아웃 -->
+        <div class="calc-table">
+            <!-- 1행 1열: 설치면적 -->
+            <div class="calc-cell">
+                <span class="calc-label">설치면적</span>
+                <input type="number" class="calc-input" id="calcArea">
+                <span class="calc-unit">평</span>
+            </div>
+            <!-- 1행 2열: 지역 -->
+            <div class="calc-cell">
+                <span class="calc-label">지역</span>
+                <select class="calc-select" id="calcRegion">
+                    <option value="">시, 도 선택</option>
+                    <option value="서울">서울특별시</option>
+                    <option value="부산">부산광역시</option>
+                    <option value="대구">대구광역시</option>
+                    <option value="인천">인천광역시</option>
+                    <option value="광주">광주광역시</option>
+                    <option value="대전">대전광역시</option>
+                    <option value="울산">울산광역시</option>
+                    <option value="세종">세종특별자치시</option>
+                    <option value="경기">경기도</option>
+                    <option value="강원">강원특별자치도</option>
+                    <option value="충북">충청북도</option>
+                    <option value="충남">충청남도</option>
+                    <option value="전북">전북특별자치도</option>
+                    <option value="전남">전라남도</option>
+                    <option value="경북">경상북도</option>
+                    <option value="경남">경상남도</option>
+                    <option value="제주">제주특별자치도</option>
+                </select>
+                <span class="calc-unit"></span>
+            </div>
+            <!-- 1~2행 3열: 계산하기 버튼 (병합) -->
+            <div class="calc-btn-wrapper">
+                <button class="calc-btn" id="calcButton">계산하기</button>
+            </div>
+            <!-- 2행 1열: 설치장소 -->
+            <div class="calc-cell">
+                <span class="calc-label">설치장소</span>
+                <select class="calc-select" id="calcPlace">
+                    <option value="">선택하세요</option>
+                    <option value="1.5">건물 (지붕/옥상) - 1.5</option>
+                    <option value="1.2">토지 (100kW 미만) - 1.2</option>
+                    <option value="0.8">임야 (산지) - 0.8</option>
+                    <option value="0.5">토지 (대규모) - 0.5</option>
+                </select>
+                <span class="calc-unit"></span>
+            </div>
+            <!-- 2행 2열: 계약형태 -->
+            <div class="calc-cell">
+                <span class="calc-label">계약형태</span>
+                <input type="text" class="calc-input readonly" value="현물거래" readonly>
+                <span class="calc-unit"></span>
+            </div>
+        </div>
+
+       
+
+        <!-- 계산 결과 영역 (드롭다운) -->
+        <div class="calc-result-wrapper" id="calcResultWrapper">
+            <hr class="calc-divider">
+    
+            <div class="calc-result-section" id="calcResultSection">
+                <div class="calc-result-title">계산 결과</div>
+
+                <!-- 결과 행들 (입력 영역과 동일한 구조) -->
+                <div class="calc-rows">
+                    <!-- 결과 1행: 월간 예상 발전량, 월 수익 -->
+                    <div class="calc-row">
+                        <div class="calc-cell">
+                            <span class="calc-label">예상 발전소<br>용량</span>
+                            <div class="calc-result-value" id="powerCapacity">0</div>
+                            <span class="calc-unit">kW</span>
+                        </div>
+                        <div class="calc-cell">
+                            <span class="calc-label"></span>
+                            <div></div>
+                            <span class="calc-unit"></span>
+                        </div>
+                    </div>
+                    <!-- 결과 2행: 월간 예상 발전량, 월 수익 -->
+                    <div class="calc-row">
+                        <div class="calc-cell">
+                            <span class="calc-label">월간 예상<br>발전량</span>
+                            <div class="calc-result-value" id="resultCapacity">0</div>
+                            <span class="calc-unit">kW</span>
+                        </div>
+                        <div class="calc-cell">
+                            <span class="calc-label">예상 월 수익</span>
+                            <div class="calc-result-value" id="resultMonthly">0</div>
+                            <span class="calc-unit">원</span>
+                        </div>
+                    </div>
+
+                    <!-- 결과 3행: 연 수익, 수익률 -->
+                    <div class="calc-row">
+                        <div class="calc-cell">
+                            <span class="calc-label">예상 연 수익</span>
+                            <div class="calc-result-value" id="resultYearly">0</div>
+                            <span class="calc-unit">원</span>
+                        </div>
+                        <div class="calc-cell">
+                            <span class="calc-label">적용 가중치</span>
+                            <div class="calc-result-value" id="resultRate">0</div>
+                            <span class="calc-unit"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calc-notice">※ 자금 대출이자, 토목비, 시설관리비, 보험, 수수료, 안전관리비용 등 부가 지출에 따라 실제 수익은 달라질 수 있습니다.</div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    (function() {
+        var calcBtn = document.getElementById("calcButton");
+        var resultWrapper = document.getElementById("calcResultWrapper");
+
+        // 지역별 평균 일조시간 (피크 일사량, h/day)
+        var sunHoursMap = {
+            "서울": 3.5, "부산": 3.8, "대구": 3.7, "인천": 3.4,
+            "광주": 3.7, "대전": 3.6, "울산": 3.8, "세종": 3.6,
+            "경기": 3.5, "강원": 3.6, "충북": 3.6, "충남": 3.6,
+            "전북": 3.7, "전남": 3.8, "경북": 3.7, "경남": 3.7,
+            "제주": 3.6
+        };
+
+        // 면적(평) → 설치용량(kW) 변환: 약 3평당 1kW
+        var PY_PER_KW = 3;
+
+        // 계산하기 버튼 클릭
+        calcBtn.addEventListener("click", function() {
+            var areaPy = parseFloat(document.getElementById('calcArea').value);
+            var regionVal = document.getElementById('calcRegion').value;
+            var weight = parseFloat(document.getElementById('calcPlace').value);
+            var resultDisplay = document.getElementById('powerCapacity');
+
+            // 입력값 검증
+            if (!areaPy || areaPy <= 0) return alert("설치면적을 입력해주세요.");
+            if (!regionVal || !sunHoursMap[regionVal]) return alert("지역을 선택해주세요.");
+            if (!weight || isNaN(weight)) return alert("설치장소를 선택해주세요.");
+
+            var sunHours = sunHoursMap[regionVal];
+            var capacity = areaPy / PY_PER_KW; // 평 → kW 변환
+
+            // 시장 단가 설정 (필요시 수정)
+            var SMP = 135; // 2026 예상 평균가
+            var REC = 78;  // 2026 예상 평균가
+
+            // 계산 로직
+            var monthlyGen = capacity * sunHours * 30.4;
+            var yearlyGen = capacity * sunHours * 365;
+
+            // 수익 공식 = 발전량 * (SMP + (REC * 가중치))
+            var unitPrice = SMP + (REC * weight);
+            var monthProfit = monthlyGen * unitPrice;
+            var yearProfit = yearlyGen * unitPrice;
+
+            // 2. 계산 로직 (100kW / 300평 = 0.3333...)
+            if (areaPy > 0) {
+                const powerCapacity = (areaPy * (100 / 300)).toFixed(0); // 소수점 둘째자리까지 표시
+                resultDisplay.innerText = powerCapacity;
+            } else {
+                resultDisplay.innerText = '0';
+            }
+
+            // 결과 영역 드롭다운 표시
+            resultWrapper.classList.add("show");
+
+            // 화면 출력
+            document.getElementById('resultCapacity').innerText = Math.round(monthlyGen).toLocaleString();
+            document.getElementById('resultRate').innerText = weight;
+            document.getElementById('resultMonthly').innerText = Math.round(monthProfit).toLocaleString();
+            document.getElementById('resultYearly').innerText = Math.round(yearProfit).toLocaleString();
+        });
+    })();
+    </script>
+    
