@@ -1,0 +1,52 @@
+<script>
+const widgetId = 'w20260211ff2b2550eb7d4';
+const targetWidget = document.getElementById(widgetId);
+
+if (targetWidget) {
+    const container = targetWidget.querySelector('.widget.board._list_wrap');
+
+    // 1. 페이징 상태를 체크하고 관리하는 함수
+    const managePaging = () => {
+        const allNavs = container.querySelectorAll('nav.paging-block');
+        const systemNav = Array.from(allNavs).find(nav => !nav.classList.contains('my-custom-paging'));
+        const myNav = container.querySelector('nav.my-custom-paging');
+
+        // 시스템이 만든 nav가 존재하면, 내가 만든 것은 삭제
+        if (systemNav && myNav) {
+            myNav.remove();
+            console.log("시스템 페이징이 감지되어 커스텀 페이징을 제거했습니다.");
+        } 
+        // 둘 다 없다면 내가 만든 nav 추가 (게시글이 적을 때)
+        else if (allNavs.length === 0) {
+            createMyPaging(container);
+        }
+    };
+
+    // 2. 커스텀 nav를 생성하는 함수
+    const createMyPaging = (parent) => {
+        const nav = document.createElement('nav');
+        nav.className = 'paging-block my-custom-paging'; // 구분용 클래스 추가
+        
+        // ... (이전의 ul, li 생성 코드는 동일하게 들어갑니다) ...
+        nav.innerHTML = `
+            <ul class="pagination">
+                <li><a href="javascript:;" class="disabled"><</a></li>
+                <li><a href="javascript:;" class="disabled">1</a></li>
+                <li><a href="javascript:;" class="disabled">></a></li>
+            </ul>`;
+        
+        parent.appendChild(nav);
+    };
+
+    // 3. MutationObserver로 위젯 내부 변화 감시
+    const observer = new MutationObserver(() => {
+        managePaging();
+    });
+
+    // 감시 시작: 자식 요소가 추가되거나 삭제될 때 실행
+    if (container) {
+        observer.observe(container, { childList: true });
+        managePaging(); // 초기 실행
+    }
+}
+</script>
