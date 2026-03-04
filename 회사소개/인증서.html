@@ -1,0 +1,111 @@
+<style>
+/* 1. 특정 섹션 내의 이미지 박스 타겟팅 */
+#s20260125c081fc71b8c18 .doz_row ._img_box.img_wrap {
+    /* 2. 그림자 효과 (인증.png와 유사한 부드러운 스타일) */
+    /* x축, y축, 퍼짐정도, 그림자크기, 색상(rgba) */
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.2) !important;
+    
+    /* 3. 모서리 곡률 적용 */
+    border-radius: 20px !important;
+    
+    /* 4. 부드러운 렌더링을 위한 설정 */
+    transition: all 0.3s ease !important;
+    overflow: hidden !important; /* 이미지 자체가 모서리를 튀어나가지 않게 함 */
+    background-color: #ffffff !important; /* 배경이 투명할 경우를 대비한 흰색 설정 */
+}
+
+/* 5. (선택사항) 마우스를 올렸을 때 그림자가 더 진해지는 효과 */
+/* #s20260125c081fc71b8c18 .doz_row ._img_box.img_wrap:hover {
+    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.3) !important;
+    transform: translateY(-5px) !important; /* 살짝 떠오르는 효과 */
+} */
+
+
+
+</style>
+
+<script>
+(function() {
+  function breakSpecificText() {
+    // 1. 특정 위젯 ID와 해당 텍스트 래퍼 타겟팅
+      const targetWidget1 = document.querySelector('#w20260126ae85f36c9b94d ._txt_wrap');
+      const hoverWidget1 = document.querySelector('#w20260126ae85f36c9b94d ._hover_txt_wrap');
+
+if (targetWidget1) {
+      // 2. 현재 텍스트 가져오기
+      let content = targetWidget1.innerHTML;
+
+      // 3. "(태양광발전장치)" 문구를 찾아 그 앞에 <br> 태그 삽입
+      // 기존에 줄바꿈이 이미 적용되지 않았을 때만 실행하도록 체크합니다.
+      if (content.includes('(') && !content.includes('<br>(')) {
+        targetWidget1.innerHTML = content.replace('(', '<br>(');
+        hoverWidget1.innerHTML = content.replace('(', '<br>(');
+      }
+    }
+
+    const targetWidget2 = document.querySelector('#w2026012625739d6e66efb ._txt_wrap');
+    const hoverWidget2 = document.querySelector('#w2026012625739d6e66efb ._hover_txt_wrap');
+
+    if (targetWidget2) {
+      // 2. 현재 텍스트 가져오기
+      let content = targetWidget2.innerHTML;
+
+      // 3. "(태양광발전장치)" 문구를 찾아 그 앞에 <br> 태그 삽입
+      // 기존에 줄바꿈이 이미 적용되지 않았을 때만 실행하도록 체크합니다.
+      if (content.includes('(') && !content.includes('<br>(')) {
+        targetWidget2.innerHTML = content.replace('(', '<br>(');
+        hoverWidget2.innerHTML = content.replace('(', '<br>(');
+      }
+    }
+
+     const targetWidget3 = document.querySelector('#w20260126cb286be0acafc ._txt_wrap');
+    const hoverWidget3 = document.querySelector('#w20260126cb286be0acafc ._hover_txt_wrap');
+
+    if (targetWidget3) {
+      // 2. 현재 텍스트 가져오기
+      let content = targetWidget3.innerHTML;
+
+      // 3. "(태양광발전장치)" 문구를 찾아 그 앞에 <br> 태그 삽입
+      // 기존에 줄바꿈이 이미 적용되지 않았을 때만 실행하도록 체크합니다.
+      if (content.includes('(') && !content.includes('<br>(')) {
+        targetWidget3.innerHTML = content.replace('(', '<br>(');
+        hoverWidget3.innerHTML = content.replace('(', '<br>(');
+      }
+    }
+
+      const targetWidget4 = document.querySelector('#w202601265bd4ac183cce9 ._txt_wrap');
+    const hoverWidget4 = document.querySelector('#w202601265bd4ac183cce9 ._hover_txt_wrap');
+
+    if (targetWidget4) {
+      // 2. 현재 텍스트 가져오기
+      let content = targetWidget4.innerHTML;
+
+      // 3. "(태양광발전장치)" 문구를 찾아 그 앞에 <br> 태그 삽입
+      // 기존에 줄바꿈이 이미 적용되지 않았을 때만 실행하도록 체크합니다.
+      if (content.includes('(') && !content.includes('<br>(')) {
+        targetWidget4.innerHTML = content.replace('(', '<br>(');
+        hoverWidget4.innerHTML = content.replace('(', '<br>(');
+      }
+    }
+
+     const targetWidget5 = document.querySelector('#w202601267c6e12e59a9ea ._txt_wrap');
+    const hoverWidget5 = document.querySelector('#w202601267c6e12e59a9ea ._hover_txt_wrap');
+
+    if (targetWidget5) {
+      // 2. 현재 텍스트 가져오기
+      let content = targetWidget5.innerHTML;
+
+      // 3. "(태양광발전장치)" 문구를 찾아 그 앞에 <br> 태그 삽입
+      // 기존에 줄바꿈이 이미 적용되지 않았을 때만 실행하도록 체크합니다.
+      if (content.includes('(') && !content.includes('<br>(')) {
+        targetWidget5.innerHTML = content.replace('(', '<br>(');
+        hoverWidget5.innerHTML = content.replace('(', '<br>(');
+      }
+    }
+  }
+
+  // 아임웹 요소 로딩 완료 후 실행
+  window.addEventListener('load', breakSpecificText);
+})();
+
+  </script>
