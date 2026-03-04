@@ -1,0 +1,90 @@
+<!-- ========================================
+   이미지 Hover 시 "자세히 보기" 표시 - 아임웹 코드 위젯용
+   적용 위젯: 13개
+======================================== -->
+
+<style>
+/* 이미지 위젯 컨테이너 - 기준점 설정 */
+#w2026012580234850a86ac .widget.image._image_wrap,
+#w20260126e8896bfe3a061 .widget.image._image_wrap,
+#w20260126eaa2e17b4fe75 .widget.image._image_wrap,
+#w202601260ef7f7bb0cdbf .widget.image._image_wrap,
+#w2026012647850557aca00 .widget.image._image_wrap,
+#w202601269e97bc1a034e0 .widget.image._image_wrap,
+#w20260126a29ed6bddca2f .widget.image._image_wrap,
+#w2026012668177fb0c4257 .widget.image._image_wrap,
+#w20260126452f196380bba .widget.image._image_wrap,
+#w20260126e91680ddd5c83 .widget.image._image_wrap,
+#w20260126f675eae55a1ed .widget.image._image_wrap,
+#w20260126753d2c4888162 .widget.image._image_wrap,
+#w202601261fbe85455f575 .widget.image._image_wrap {
+    position: relative !important;
+}
+
+/* "자세히 보기" 오버레이 - 기본 숨김 */
+#w2026012580234850a86ac .widget.image._image_wrap::after,
+#w20260126e8896bfe3a061 .widget.image._image_wrap::after,
+#w20260126eaa2e17b4fe75 .widget.image._image_wrap::after,
+#w202601260ef7f7bb0cdbf .widget.image._image_wrap::after,
+#w2026012647850557aca00 .widget.image._image_wrap::after,
+#w202601269e97bc1a034e0 .widget.image._image_wrap::after,
+#w20260126a29ed6bddca2f .widget.image._image_wrap::after,
+#w2026012668177fb0c4257 .widget.image._image_wrap::after,
+#w20260126452f196380bba .widget.image._image_wrap::after,
+#w20260126e91680ddd5c83 .widget.image._image_wrap::after,
+#w20260126f675eae55a1ed .widget.image._image_wrap::after,
+#w20260126753d2c4888162 .widget.image._image_wrap::after,
+#w202601261fbe85455f575 .widget.image._image_wrap::after {
+    content: '' !important;
+    position: absolute !important;
+    bottom: 5px !important;
+    right: 2px !important;
+    width: 120px !important;
+    height: 30px !important;
+    background: url('https://cdn.imweb.me/thumbnail/20260127/e63819c44ea44.png') no-repeat center !important;
+    background-size: contain !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transition: opacity 0.3s ease, visibility 0.3s ease !important;
+    z-index: 100 !important;
+    pointer-events: none !important;
+}
+
+/* Hover 시 "자세히 보기" 표시 */
+#w2026012580234850a86ac .widget.image._image_wrap:hover::after,
+#w20260126e8896bfe3a061 .widget.image._image_wrap:hover::after,
+#w20260126eaa2e17b4fe75 .widget.image._image_wrap:hover::after,
+#w202601260ef7f7bb0cdbf .widget.image._image_wrap:hover::after,
+#w2026012647850557aca00 .widget.image._image_wrap:hover::after,
+#w202601269e97bc1a034e0 .widget.image._image_wrap:hover::after,
+#w20260126a29ed6bddca2f .widget.image._image_wrap:hover::after,
+#w2026012668177fb0c4257 .widget.image._image_wrap:hover::after,
+#w20260126452f196380bba .widget.image._image_wrap:hover::after,
+#w20260126e91680ddd5c83 .widget.image._image_wrap:hover::after,
+#w20260126f675eae55a1ed .widget.image._image_wrap:hover::after,
+#w20260126753d2c4888162 .widget.image._image_wrap:hover::after,
+#w202601261fbe85455f575 .widget.image._image_wrap:hover::after {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+    #w2026012580234850a86ac .widget.image._image_wrap::after,
+    #w20260126e8896bfe3a061 .widget.image._image_wrap::after,
+    #w20260126eaa2e17b4fe75 .widget.image._image_wrap::after,
+    #w202601260ef7f7bb0cdbf .widget.image._image_wrap::after,
+    #w2026012647850557aca00 .widget.image._image_wrap::after,
+    #w202601269e97bc1a034e0 .widget.image._image_wrap::after,
+    #w20260126a29ed6bddca2f .widget.image._image_wrap::after,
+    #w2026012668177fb0c4257 .widget.image._image_wrap::after,
+    #w20260126452f196380bba .widget.image._image_wrap::after,
+    #w20260126e91680ddd5c83 .widget.image._image_wrap::after,
+    #w20260126f675eae55a1ed .widget.image._image_wrap::after,
+    #w20260126753d2c4888162 .widget.image._image_wrap::after,
+    #w202601261fbe85455f575 .widget.image._image_wrap::after {
+        width: 120px !important;
+        height: 36px !important;
+    }
+}
+</style>
