@@ -1,0 +1,392 @@
+<style>
+    /* 0. 폼 위젯 배경색 */
+    #w2026012635fd38c613935 {
+        //background-color: rgba(254, 82, 0, 0.05) !important;
+         //border: 0.5px solid #000 !important;  
+         padding-top : 10px !important;
+         padding-bottom : 20px !important;
+    
+    }
+    
+    /* 1. 모든 폼 필드 - 세로 레이아웃 (라벨 위, 입력창 아래) */
+    #w2026012635fd38c613935 .form-group {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        margin-bottom: 40px !important;
+        width: 100% !important;
+        gap: 0 !important;
+    }
+    
+    /* 2. 라벨 스타일 */
+    #w2026012635fd38c613935 .form-group .control-label {
+        flex: none !important;
+        width: auto !important;
+        margin-bottom: 8px !important;
+        font-size: 22px !important;
+        font-weight: bold !important;
+        white-space: nowrap !important;
+    }
+    
+    #w2026012635fd38c613935 #thirdparty .control-label {
+        font-size: 18px !important;
+    }
+
+    /* 필수 아이콘(●) → * 모양으로 변경 */
+    .control-label .icon-required {
+        width : 0 !important;
+        height : 0 !important;
+        font-size: 0 !important;
+        display: inline-block !important;
+    }
+    .control-label .icon-required::before {
+        content: "*" !important;
+        font-size: 18px !important;
+        color: #fe5200 !important;
+        font-style: normal !important;
+        font-family: inherit !important;
+    }
+    
+    /* 예: 제목 영역 span */
+     #w2026012635fd38c613935 #thirdparty .control-label .checkbox.checkbox-styled span {
+           font-size: 18px !important;
+      }
+    
+        #thirdparty .checkbox-styled:not(.ie8) input ~ span
+        {
+            padding-left : 1.5375em !important;
+             font-size : 18px !important;    
+        }
+    
+       #thirdparty .checkbox-styled:not(.ie8) input ~ span:before {
+        width: 20px !important;      /* 체크박스   너비 */
+          height: 20px !important;     /* 체크박스 높이 */
+                         margin-top: 2px;
+      }
+    
+    /* 체크박스 label + 전문보기 한 줄 정렬 */
+    #thirdparty .checkbox.checkbox-styled {
+        display: flex !important;
+        //align-items: center !important;
+    }
+    
+    #thirdparty .checkbox.checkbox-styled label {
+        flex: 0 0 auto !important;
+        width: auto !important;
+        margin-right: 8px !important;
+    }
+    
+     
+    .doz_sys #s20260125281788bd91205 .btn-primary
+    
+    {
+        font-size : 22px !important;
+    }
+    
+    
+    /* 3. 입력 영역 전체 너비 + 폰트 */
+    #w2026012635fd38c613935 .form-group .form-control,
+    #w2026012635fd38c613935 .form-group .form-select-wrap {
+        width: 100% !important;
+        flex: none !important;
+        font-size: 18px !important;
+         min-height: 50px !important;    /* 원하는 높이로 조정 */
+          padding: 12px 15px !important;  /* 내부 여백 */
+           border: 0.5px solid rgb(204, 204, 204) !important;  
+           background : #fff; !important
+    }
+    
+    #w2026012635fd38c613935 #select_108adc852820c .form-select-wrap{
+        padding : 0px !important;
+        border: none !important;  
+    }     
+    
+    
+    
+    #w2026012635fd38c613935 #textarea_sQ83538GRi .form-control {
+          min-height: 200px !important;
+      }
+    /* 4. 2열 행 컨테이너 */
+    .ls-form-row {
+        display: flex !important;
+        gap: 20px !important;
+        width: 100% !important;
+        margin-bottom: 0 !important;
+    }
+    
+    .ls-form-row > .form-group {
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+    }
+    
+    /* 5. placeholder 스타일 */
+    #w2026012635fd38c613935 .form-group .form-control::placeholder {
+        color: #aaa !important;
+        font-size: 16px !important;
+    }
+    
+    /* 6. 첨부파일 - 버튼 옆 placeholder 입력폼 */
+    #file_77D3674a24_w2026012635fd38c613935 .ls-file-row {
+        display: flex !important;
+        align-items: stretch !important;
+        gap: 0 !important;
+        width: 100% !important;
+    }
+    
+    #file_77D3674a24_w2026012635fd38c613935 .ls-file-row > *:first-child {
+        flex: 0 0 auto !important;
+    }
+    
+    #file_77D3674a24_w2026012635fd38c613935 .ls-file-display {
+        flex: 1 !important;
+        padding: 10px !important;
+        background: #fff !important;
+        border: 1px solid #ddd !important;
+        border-left: none !important;
+        border-radius: 0 5px 5px 0 !important;
+        font-size: 16px !important;
+        color: #333 !important;
+        outline: none !important;
+        box-sizing: border-box !important;
+    }
+    
+    #file_77D3674a24_w2026012635fd38c613935 .ls-file-display::placeholder {
+        color: #aaa !important;
+    }
+    
+     /* 첨부파일 버튼을 이미지로 교체 */                                                                                #file_77D3674a24_w2026012635fd38c613935 .btn.btn-default.form_widget_btn {
+          background-image: url('https://cdn.imweb.me/thumbnail/20260212/5de6a234af4bf.png') !important;               
+          background-size: contain !important;
+          background-repeat: no-repeat !important;
+          background-position: center !important;
+          background-color: transparent !important;
+          border: none !important;
+          font-size: 0 !important;
+          color: transparent !important;
+          width: 120px !important;
+          height: 45px !important;
+          cursor: pointer !important;
+      }
+    
+    /* 7. 개인정보 동의 - 전문보기 토글 */
+    #thirdparty .form-control {
+        display: none !important;
+    }
+    
+    #thirdparty .form-control.ls-show {
+        display: block !important;
+        margin-top: 10px !important;
+    }
+    
+    #thirdparty .checkbox.checkbox-styled label{
+        margin-bottom : 0px !important;
+    }
+    
+    .ls-thirdparty-toggle {
+        color: #fe5200 !important;
+        cursor: pointer !important;
+        font-size: 18px !important;
+        text-decoration: underline !important;
+        margin-left: 10px !important;
+    }
+    
+    
+    /* (필수) 텍스트 */
+    .ls-required {
+        color: #fe5200 !important;
+        //font-weight: bold !important;
+    }
+    
+    /* 하단 안내 텍스트 */
+    .ls-thirdparty-bottom {
+        font-size: 16px !important;
+        color: #999 !important;
+        margin-top: 10px !important;
+    }
+    
+    /* 개인정보 동의 팝업 */                                                                                         
+      .ls-privacy-overlay {                                                                                            
+          position: fixed;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
+          background: rgba(0,0,0,0.5);
+          z-index: 99999;
+          display: none;
+          justify-content: center;
+          //align-items: center;
+      }
+      .ls-privacy-overlay.ls-show {
+          display: flex !important;
+      }
+      .ls-privacy-modal {
+          background: #fff;
+          padding: 30px;
+          border-radius: 10px;
+          max-width: 600px;
+          width: 90%;
+          max-height: 70vh;
+          overflow-y: auto;
+          position: relative;
+      }
+      .ls-privacy-close {
+          position: absolute;
+          top: 10px; right: 15px;
+          font-size: 24px;
+          cursor: pointer;
+          border: none;
+          background: none;
+          color: #333;
+      }
+    </style>
+    
+    <script>
+    (function($) {
+        $(function() {
+            var WIDGET = '#w2026012635fd38c613935';
+    
+            // ──────────────────────────────────────
+            // 1. 2열 배치: 이름 + 이메일
+            //    ※ 이메일 필드 추가 후 아래 ID를 교체하세요
+            // ──────────────────────────────────────
+            var EMAIL_ID = '#email_56K120IeS3';
+            var $name = $('#input_fe14f90c76fc3');
+            var $email = $(EMAIL_ID);
+            if ($name.length && $email.length) {
+                var $row1 = $('<div class="ls-form-row"></div>');
+                $name.before($row1);
+                $row1.append($name).append($email);
+            }
+    
+            // ──────────────────────────────────────
+            // 2. 2열 배치: 휴대전화번호 + 설치주소지
+            // ──────────────────────────────────────
+            var $phone = $('#input_018e0a120816a');
+            var $address = $('#input_33p5EpCO58');
+            if ($phone.length && $address.length) {
+                var $row2 = $('<div class="ls-form-row"></div>');
+                $phone.before($row2);
+                $row2.append($phone).append($address);
+            }
+    
+            // ──────────────────────────────────────
+            // 2.5 Placeholder 설정
+            //     ※ 텍스트를 원하는 내용으로 교체하세요
+            // ──────────────────────────────────────
+            // select 기본 옵션 텍스트 변경
+            var $selectOption = $('#select_108adc852820c select option[selected], #select_108adc852820c select option:first');
+            if ($selectOption.length) {
+                $selectOption.text('유형을 선택해 주세요.');
+            }
+    
+            // input/textarea placeholder 설정
+            var placeholders = {
+                '#input_fe14f90c76fc3 .form-control': '이름을 입력해 주세요.',
+                '#email_56K120IeS3 .form-control':    '이메일을 입력해 주세요.',
+                '#input_018e0a120816a .form-control':  '숫자만 입력해 주세요.',
+                '#input_33p5EpCO58 .form-control':    '주소를 입력해 주세요.',
+                '#textarea_sQ83538GRi .form-control': '문의 내용을 입력해 주세요.'
+            };
+            $.each(placeholders, function(selector, text) {
+                $(selector).attr('placeholder', text);
+            });
+    
+            // ──────────────────────────────────────
+            // 3. 첨부파일 - 버튼 옆에 파일명 입력폼
+            // ──────────────────────────────────────
+            var $fileGroup = $('#file_77D3674a24_w2026012635fd38c613935');
+            var $fileInput = $fileGroup.find('input[type="file"]');
+            if ($fileInput.length) {
+                // 기존 버튼 영역(파일 input의 부모)을 건드리지 않고 옆에 display 추가
+                var $btnArea = $fileInput.parent();
+                var $display = $('<input type="text" class="ls-file-display" placeholder="파일을 업로드 하세요." readonly>');
+                var $row = $('<div class="ls-file-row"></div>');
+    
+                $btnArea.wrap($row);
+                $btnArea.after($display);
+    
+                // 파일 업로드 시 → placeholder 숨기기 (아임웹 자체 파일명 표시 사용)
+                // 파일 삭제 시 → placeholder 다시 표시
+                var checkFileState = function() {
+                    var hasFile = $fileInput[0].files && $fileInput[0].files.length > 0;
+                    var hasImwebDisplay = $fileGroup.find('[class*="file_item"], [class*="uploaded"], .file-name').length > 0;
+                    if (hasFile || hasImwebDisplay) {
+                        $display.hide();
+                    } else {
+                        $display.show();
+                    }
+                };
+    
+                $fileInput.on('change', checkFileState);
+    
+                // 아임웹의 파일 삭제(×) 감지
+                var observer = new MutationObserver(checkFileState);
+                observer.observe($fileGroup[0], { childList: true, subtree: true });
+            }
+    
+             // ──────────────────────────────────────
+            // 4. 개인정보 동의 - "전문보기" 토글
+            // ──────────────────────────────────────
+            var $privacy = $('#thirdparty');
+
+            // 텍스트 교체: control-label "개인정보 제3자 제공 동의" → "개인정보처리방침"
+            $privacy.find('.control-label').contents().filter(function() {
+                return this.nodeType === 3;
+            }).each(function() {
+                this.textContent = this.textContent.replace('개인정보 제3자 제공 동의', '개인정보처리방침');
+            });
+
+            // 텍스트 교체: 체크박스 label span "개인정보 제3자 제공에 대해 동의합니다." → "개인정보처리방침에 동의합니다."
+            $privacy.find('.checkbox.checkbox-styled label span').contents().filter(function() {
+                return this.nodeType === 3;
+            }).each(function() {
+                this.textContent = this.textContent.replace('개인정보 제3자 제공에 대해 동의합니다.', '개인정보처리방침에 동의합니다.');
+            });
+
+            var $privacyContent = $privacy.find('.form-control');
+            if ($privacyContent.length) {
+                var $toggleLink = $('<span class="ls-thirdparty-toggle">전문보기</span>');
+    
+                 // label span 앞에 (필수) 텍스트 추가
+                var $labelSpan = $privacy.find('.checkbox.checkbox-styled label span');
+                if ($labelSpan.length && $labelSpan.find('.ls-required').length === 0) {
+                    $labelSpan.prepend('<span class="ls-required">(필수) </span>');
+                }
+    
+                // label 옆에 전문보기 링크 삽입 (별도 영역, 체크박스 없음)
+                var $checkLabel = $privacy.find('input[type="checkbox"]').closest('label');
+                if ($checkLabel.length) {
+                    $checkLabel.after($toggleLink);
+                } else {
+                    $privacyContent.before($toggleLink);
+                }
+    
+                // 팝업 모달 생성
+                var contentHtml = $privacyContent.html();
+                var $overlay = $('<div class="ls-privacy-overlay"><div class="ls-privacy-modal"><button class="ls-privacy-close">&times;</button><div class="ls-privacy-body">' + contentHtml + '</div></div></div>');
+                $('body').append($overlay);
+    
+                // 전문보기 클릭 → 팝업 열기
+                $toggleLink.on('click', function() {
+                    $overlay.addClass('ls-show');
+                });
+    
+                // 닫기 버튼 클릭 → 팝업 닫기
+                $overlay.find('.ls-privacy-close').on('click', function() {
+                    $overlay.removeClass('ls-show');
+                });
+    
+                // 배경 클릭 → 팝업 닫기
+                $overlay.on('click', function(e) {
+                    if ($(e.target).hasClass('ls-privacy-overlay')) {
+                        $overlay.removeClass('ls-show');
+                    }
+                });
+    
+                // 하단 안내 텍스트 추가
+                var $bottomText = $('<div class="ls-thirdparty-bottom">위 동의를 거부할 권리가 있으며, 필수항목의 동의를 거부하실 경우 문의 처리 및 결과 회신이 제한됩니다.</div>');
+                $privacy.append($bottomText);
+            }
+        });
+    })(jQuery);
+    </script>
+    
