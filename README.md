@@ -5,18 +5,18 @@
 
 ### 각 페이지마다 들어가는 위치 조절용 코드
 
-대충 아래것들 찾아서 요령껏 넣으면 됨
-** 사용방법 ** 
-위젯id .classId -> 모르면 물어보셈
+대충 아래것들 찾아서 요령껏 넣으면 됨 <br>
+** 사용방법 **  <br>
+위젯id .classId -> 모르면 물어보셈 <br>
 
-<style>
-  #w2026012882553ad9b1e2d .nav
-  {
-    margin-left: 30px;
-  }
+<style> <br>
+  #w2026012882553ad9b1e2d .nav <br>
+  { <br>
+    margin-left: 30px; <br>
+  } <br>
 
-   #text_w202601291ba64849511cc.default_padding
-  {
-    padding-left : 0px !important;
-  }
+   #text_w202601291ba64849511cc.default_padding <br>
+  { <br>
+    padding-left : 0px !important; <br>
+  } <br>
   </style>
