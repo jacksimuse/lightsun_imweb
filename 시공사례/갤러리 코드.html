@@ -1,0 +1,367 @@
+<style>
+    #w20260125055ff3959f764
+    {
+        padding-left : 30px !important;
+    }
+
+
+    /* 1. 이미지 컨테이너에 relative 설정 */
+    #post_card_b20260119d2cbbf9274b26 .card-head,
+    #post_card_b20260119d2cbbf9274b26 ._img_wrap {
+        position: relative !important;
+    }
+    
+    /* 2. 카테고리 라벨 스타일 - 이미지 위 겹침 */
+    #post_card_b20260119d2cbbf9274b26 .category-label {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        z-index: 100 !important;
+        background-color: #fe5200 !important;
+        color: #ffffff !important;
+        padding: 6px 40px !important;
+        font-size: 13px !important;
+        font-weight: bold !important;
+        border-radius: 0 0 10px 0 !important;
+        box-shadow: 2px 2px 4px rgba(0,0,0,0.3) !important;
+    }
+    
+    /* 3. 원래 카테고리 위치(em) 숨김 */
+    #post_card_b20260119d2cbbf9274b26 .title span em {
+        display: none !important;
+    }
+    
+    /* 4. 카드 레이아웃 */
+    #post_card_b20260119d2cbbf9274b26 .card._card {
+        position: relative !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: visible !important;
+    }
+    
+    #post_card_b20260119d2cbbf9274b26 .card-body {
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 5px !important;
+        position: relative !important;
+        min-height: 80px !important;
+    }
+    
+    /* 5. 요약글/제목 순서 변경 */
+    #post_card_b20260119d2cbbf9274b26 .text { order: 1 !important; }
+    #post_card_b20260119d2cbbf9274b26 .title { order: 2 !important; margin-top: 5px !important; }
+    
+    /* 6. .title 영역 - 새 구조 (title-text / title-buttons) */
+    #post_card_b20260119d2cbbf9274b26 .title.restructured {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        height: auto !important;
+        line-height: 1.4 !important;
+    }
+    
+    /* 제목 텍스트 span - loc-part 방식 */
+    .title-text {
+        text-align: left !important;
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        padding-right: 8px !important;
+    }
+    
+    /* 버튼 영역 span - num-part 방식 */
+    .title-buttons {
+        flex: 0 0 auto !important;
+        white-space: nowrap !important;
+        display: flex !important;
+        gap: 4px !important;
+        align-items: center !important;
+    }
+    
+    /* 7. 요약글 내부 레이아웃 */
+    #post_card_b20260119d2cbbf9274b26 .text.text-block.show_body span {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        margin: 0px !important;
+        padding: 0px !important;
+        overflow: hidden !important;
+    }
+    
+    .loc-part {
+        text-align: left;
+        color: #757575;
+        font-size: 14px;
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        overflow: hidden;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        padding-right: 10px !important;
+    }
+    
+    .num-part {
+        text-align: right !important;
+        flex: 0 0 auto !important;
+        white-space: nowrap !important;
+        font-weight: bold !important;
+        color: #333;
+        font-size: 20px;
+    }
+    
+    /* 7. SNS 버튼 스타일 */
+.sns-button {
+    display: inline-block !important;
+    width: 87px !important;
+    height: 30px !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    transition: transform 0.2s !important;
+    border: none !important;
+    background-color: transparent !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    flex-shrink: 0 !important;
+    padding: 0 !important;
+}
+
+.sns-button:hover {
+    transform: scale(1.15) !important;
+}
+
+.sns-button.youtube {
+    background-image: url('https://cdn.imweb.me/thumbnail/20260212/42bfd8b9cf3ab.png') !important;
+}
+
+.sns-button.naver-blog {
+    background-image: url('https://cdn.imweb.me/thumbnail/20260212/602211696b3c2.png') !important;
+}
+
+    
+    /* 9. 카테고리 필터링 - 숨김 처리만 */
+    #post_card_b20260119d2cbbf9274b26 .card._card.ls-filtered-hidden {
+        display: none !important;
+    }
+    </style>
+    
+    <script>
+    (function($) {
+        $(function() {
+            var BOARD_ID = '#post_card_b20260119d2cbbf9274b26';
+    
+            // 1. 카테고리 라벨을 이미지 위로 이동
+            function moveCategoryToImage() {
+                $(BOARD_ID + ' ._post_item_wrap, ' + BOARD_ID + ' .card._card').each(function() {
+                    var $card = $(this);
+                    if ($card.find('.category-label').length > 0) return;
+    
+                    var $categoryEm = $card.find('.title span em');
+                    var categoryText = $categoryEm.text().trim();
+                    var $imgWrap = $card.find('.card-head, ._img_wrap, .thumbnail').first();
+    
+                    if (categoryText && $imgWrap.length > 0) {
+                        var $label = $('<span class="category-label">' + categoryText + '</span>');
+                        $imgWrap.css('position', 'relative').prepend($label);
+                        $categoryEm.hide();
+                    }
+                });
+            }
+    
+            // 2. 숫자/글자 분리
+            function splitLocationAndPower() {
+                $(BOARD_ID + ' .text-block span').each(function() {
+                    var $span = $(this);
+                    if ($span.find('.loc-part').length > 0) return;
+    
+                    var rawText = $span.text().trim();
+                    var match = rawText.match(/(.*)\s([\d,.]+kW)$/);
+    
+                    if (match) {
+                        var location = match[1];
+                        var power = match[2];
+                        $span.html('<span class="loc-part">' + location + '</span><span class="num-part">' + power + '</span>');
+                    }
+                });
+            }
+    
+            // 3. .title 구조 재구성 (span 2개: title-text, title-buttons)
+            function restructureTitle() {
+                $(BOARD_ID + ' ._post_item_wrap, ' + BOARD_ID + ' .card._card').each(function() {
+                    var $card = $(this);
+                    var $title = $card.find('.title');
+    
+                    // 이미 재구성됐으면 스킵
+                    if ($title.hasClass('restructured')) return;
+    
+                    // 원래 제목 텍스트 가져오기
+                    var titleText = '';
+    
+                    // a 태그 전체를 복사해서 em(카테고리)만 제거하고 텍스트 추출
+                    var $aTag = $title.find('a').first();
+                    if ($aTag.length > 0) {
+                        titleText = $aTag.clone().find('em').remove().end().text().trim();
+                    }
+    
+                    // a 태그가 없으면 title 전체에서 가져오기
+                    if (!titleText) {
+                        titleText = $title.clone().find('em').remove().end().text().trim();
+                    }
+    
+                    // 기존 내용 비우고 새 구조 생성
+                    $title.empty();
+                    $title.append('<span class="title-text">' + titleText + '</span>');
+                    $title.append('<span class="title-buttons"></span>');
+                    $title.addClass('restructured');
+                });
+            }
+    
+            // 4. 상세페이지에서 링크 가져와서 SNS 버튼 추가
+        function addSnsButtonsToTitle() {
+            $(BOARD_ID + ' ._post_item_wrap, ' + BOARD_ID + ' .card._card').each(function() {
+                var $card = $(this);
+                var $title = $card.find('.title');
+                var $buttonArea = $title.find('.title-buttons');
+
+                if ($buttonArea.length === 0) return;
+                if ($title.data('sns-processed')) return;
+                if ($title.data('loading')) return;
+
+                var detailUrl = $card.find('a').first().attr('href');
+                if (!detailUrl) return;
+
+                $title.data('loading', true);
+
+                $.ajax({
+                    url: detailUrl,
+                    type: 'GET',
+                    dataType: 'html',
+                    timeout: 5000,
+                    success: function(html) {
+                        var youtubeUrl = null;
+                        var naverBlogUrl = null;
+                        var hasYoutube = false;
+                        var hasBlog = false;
+
+                        // DOMParser로 상세페이지 HTML 파싱
+                        var parser = new DOMParser();
+                        var doc = parser.parseFromString(html, 'text/html');
+
+                        // 게시글 본문 영역(.board_txt_area)에서만 검색
+                        var contentEl = doc.querySelector('.board_txt_area');
+                        if (!contentEl) contentEl = doc.querySelector('.fr-view');
+                        if (!contentEl) return;
+
+                        // 본문 영역의 a 태그에서 링크 검색
+                        var links = contentEl.querySelectorAll('a');
+                        for (var i = 0; i < links.length; i++) {
+                            var href = links[i].getAttribute('href') || '';
+                            if (!youtubeUrl && href.match(/youtube\.com|youtu\.be/i)) {
+                                youtubeUrl = href;
+                            }
+                            if (!naverBlogUrl && href.match(/blog\.naver\.com/i)) {
+                                naverBlogUrl = href;
+                            }
+                        }
+
+                        // 본문 텍스트에 '유튜브' / '블로그' 가 있는지 확인
+                        var bodyText = contentEl.textContent || '';
+                        if (!youtubeUrl && bodyText.indexOf('유튜브') !== -1) {
+                            hasYoutube = true;
+                        }
+                        if (!naverBlogUrl && bodyText.indexOf('블로그') !== -1) {
+                            hasBlog = true;
+                        }
+
+                        // URL 정리
+                        if (youtubeUrl && !youtubeUrl.startsWith('http')) {
+                            youtubeUrl = 'https://' + youtubeUrl;
+                        }
+                        if (naverBlogUrl && !naverBlogUrl.startsWith('http')) {
+                            naverBlogUrl = 'https://' + naverBlogUrl;
+                        }
+
+                        // 유튜브: 링크가 있으면 링크로, 텍스트만 있으면 상세페이지로
+                        if (youtubeUrl || hasYoutube) {
+                            var ytTarget = youtubeUrl || detailUrl;
+                            var $ytBtn = $('<button class="sns-button youtube" title="유튜브"></button>');
+                            $ytBtn.on('click', function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                window.open(ytTarget, '_blank');
+                            });
+                            $buttonArea.append($ytBtn);
+                        }
+
+                        // 블로그: 링크가 있으면 링크로, 텍스트만 있으면 상세페이지로
+                        if (naverBlogUrl || hasBlog) {
+                            var nbTarget = naverBlogUrl || detailUrl;
+                            var $nbBtn = $('<button class="sns-button naver-blog" title="블로그"></button>');
+                            $nbBtn.on('click', function(e) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                window.open(nbTarget, '_blank');
+                            });
+                            $buttonArea.append($nbBtn);
+                        }
+                    },
+                    complete: function() {
+                        $title.data('sns-processed', true);
+                        $title.data('loading', false);
+                    }
+                });
+            });
+        }
+    
+            // 전체 실행 함수
+            var initTimer = null;
+            function initBoard() {
+                // 디바운싱: 연속 호출 방지
+                if (initTimer) clearTimeout(initTimer);
+                initTimer = setTimeout(function() {
+                    moveCategoryToImage();
+                    splitLocationAndPower();
+                    restructureTitle();
+                    addSnsButtonsToTitle();
+                    applyCategoryFilter();
+                }, 100);
+            }
+    
+            // 초기 실행
+            setTimeout(initBoard, 500);
+    
+            // 동적 로드 대응 (페이지네이션 등)
+            $(document).ajaxComplete(function() {
+                // 새 콘텐츠가 로드되면 필터 재적용 허용
+                filterApplied = false;
+                setTimeout(initBoard, 300);
+            });
+    
+            // MutationObserver - 처리 중일 때는 무시
+            var observer = new MutationObserver(function(mutations) {
+                if (isProcessing) return; // 처리 중이면 무시
+    
+                // 새 카드가 추가된 경우에만 처리
+                var hasNewCards = mutations.some(function(m) {
+                    return m.addedNodes.length > 0;
+                });
+    
+                if (hasNewCards && !filterApplied) {
+                    setTimeout(initBoard, 200);
+                }
+            });
+    
+            var $board = $(BOARD_ID);
+            if ($board.length > 0) {
+                observer.observe($board[0], { childList: true, subtree: false });
+            }
+        });
+    })(jQuery);
+    </script>
+    
