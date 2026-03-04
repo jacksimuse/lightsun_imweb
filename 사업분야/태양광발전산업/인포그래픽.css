@@ -1,0 +1,9 @@
+<style>
+/* ===== 갤러리 클릭 & Hover 완전 제거 ===== */
+/* 대상 위젯: #w202602124ec77743e59e8 */
+
+#w202602124ec77743e59e8 .item_container._item_container {
+    pointer-events: none !important;
+    cursor: default !important;
+}
+</style>
